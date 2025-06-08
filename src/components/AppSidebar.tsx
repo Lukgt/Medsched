@@ -1,6 +1,7 @@
 
 import { Home, Calendar, User, FileText, LogOut } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
+import MedshedLogo from "@/assets/Medshed-line.svg";
 import {
   Sidebar,
   SidebarContent,
@@ -33,7 +34,7 @@ const menuItems = [
   },
   {
     title: "Perfil",
-    url: "/",
+    url: "/perfil",
     icon: User,
   },
 ];
@@ -49,11 +50,10 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">M</span>
+        <div className="flex items-center space-x-2 ">
+          <div className="h-8 p-[4px] bg-[#0BADC9] rounded-lg flex items-center justify-center">
+            <img src={MedshedLogo} alt="Logo" />
           </div>
-          <span className="font-semibold text-lg">MEDSCHED</span>
         </div>
       </SidebarHeader>
       

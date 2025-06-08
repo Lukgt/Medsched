@@ -1,9 +1,8 @@
-
 import { Search, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }: { onSearch: (term: string) => void }) => {
   return (
     <div className="px-4 py-4 md:px-6 bg-gradient-to-r from-blue-50 to-blue-100">
       <div className="flex space-x-2">
@@ -12,6 +11,7 @@ const SearchBar = () => {
           <Input
             placeholder="Buscar médicos ou especialidades..."
             className="pl-10 bg-white"
+            onChange={(e) => onSearch(e.target.value)}
           />
         </div>
         <Button variant="outline" size="icon">

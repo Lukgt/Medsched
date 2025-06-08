@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
+import MedshedLogo from "@/assets/Medshed.svg";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -58,8 +59,8 @@ const Auth = () => {
         <Card>
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center mb-4">
-              <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">M</span>
+              <div className="w-[80px] h-[80px] bg-[#0BADC9] p-[4px] rounded-lg flex items-center justify-center">
+                <img src={MedshedLogo} />
               </div>
             </div>
             <CardTitle className="text-2xl font-bold text-center">
@@ -161,7 +162,7 @@ const Auth = () => {
                 </div>
               )}
 
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-[#0BADC9]">
                 {isLogin ? "Entrar" : "Criar Conta"}
               </Button>
 

@@ -154,66 +154,6 @@ const Agendamento = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <CalendarIcon className="h-5 w-5 mr-2" />
-                Selecionar Data
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                disabled={(date) => date < new Date()}
-                className="rounded-md border"
-              />
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Clock className="h-5 w-5 mr-2" />
-                Selecionar Horário
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-2">
-                {timeSlots.map((time) => {
-                  const isUnavailable =
-                    selectedDate &&
-                    selectedDoctor &&
-                    isTimeSlotTaken(selectedDate, time, selectedDoctor);
-
-                  return (
-                    <Button
-                      key={time}
-                      variant={selectedTime === time ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedTime(time)}
-                      disabled={isUnavailable}
-                      className={
-                        isUnavailable ? "opacity-50 cursor-not-allowed" : ""
-                      }
-                    >
-                      {time}
-                      {isUnavailable && (
-                        <span className="ml-1 text-xs">❌</span>
-                      )}
-                    </Button>
-                  );
-                })}
-              </div>
-              {selectedDate && selectedDoctor && (
-                <p className="text-xs text-gray-500 mt-2">
-                  ❌ = Horário indisponível para {selectedDoctor}
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
                 <User className="h-5 w-5 mr-2" />
                 Selecionar Médico
               </CardTitle>
@@ -238,6 +178,88 @@ const Agendamento = () => {
                   </Button>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <CalendarIcon className="h-5 w-5 mr-2" />
+                Selecionar Data
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                disabled={(date) => date < new Date()}
+                className="rounded-md border"
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Clock className="h-5 w-5 mr-2" />
+                Selecionar Horário
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 gap-2">
+                {timeSlots.map((time, idx) => {
+                  let isUnavailable = false;
+                  // Deixe os horários das 09:00 e 15:00 indisponíveis para todos os médicos como exemplo
+                  if (time === "09:00" || time === "15:00") {
+                    isUnavailable = true;
+                  } else if (selectedDate && selectedDoctor) {
+                    isUnavailable = isTimeSlotTaken(selectedDate, time, selectedDoctor);
+                  }
+                  return (
+                    <Button
+                      key={time}
+                      variant={selectedTime === time ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedTime(time)}
+                      disabled={selectedDate && selectedDoctor ? isUnavailable : false}
+                      className={
+                        selectedDate && selectedDoctor && isUnavailable
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      }
+                    >
+                      {time}
+                      {selectedDate && selectedDoctor && isUnavailable && (
+                        <span className="ml-1 text-xs">❌</span>
+                      )}
+                    </Button>
+                  );
+                })}
+              </div>
+              {selectedDate && selectedDoctor && (() => {
+                const allUnavailable = timeSlots.every((time) =>
+                  (time === "09:00" || time === "15:00") || isTimeSlotTaken(selectedDate, time, selectedDoctor)
+                );
+                const anyUnavailable = timeSlots.some((time) =>
+                  (time === "09:00" || time === "15:00") || (selectedDate && selectedDoctor && isTimeSlotTaken(selectedDate, time, selectedDoctor))
+                );
+                if (allUnavailable) {
+                  return (
+                    <p className="text-xs text-red-500 mt-2">
+                      Todos os horários estão indisponíveis para {selectedDoctor} nesta data.
+                    </p>
+                  );
+                }
+                if (anyUnavailable) {
+                  return (
+                    <p className="text-xs text-gray-500 mt-2">
+                      ❌ = Horário indisponível para {selectedDoctor}
+                    </p>
+                  );
+                }
+                return null;
+              })()}
             </CardContent>
           </Card>
 
@@ -323,6 +345,20 @@ const Agendamento = () => {
                     </div>
                   ))}
               </div>
+              <Button
+                variant="outline"
+                className="mt-4 w-full"
+                onClick={() => {
+                  setAppointments([]);
+                  localStorage.removeItem("medsched_appointments");
+                  toast({
+                    title: "Agendamentos limpos",
+                    description: "Todos os agendamentos foram removidos.",
+                  });
+                }}
+              >
+                Limpar Agendamentos
+              </Button>
             </CardContent>
           </Card>
         )}

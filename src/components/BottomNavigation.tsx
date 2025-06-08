@@ -10,7 +10,7 @@ const BottomNavigation = () => {
     { icon: Search, label: "Buscar", path: "/NotFound" },
     { icon: Calendar, label: "Agendar", path: "/agendamento" },
     { icon: MessageCircle, label: "Mensagens", path: "/prontuarios" },
-    { icon: User, label: "Perfil", path: "/NotFound" },
+    { icon: User, label: "Perfil", path: "/perfil" },
   ];
 
   return (
