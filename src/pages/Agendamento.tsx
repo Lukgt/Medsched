@@ -37,11 +37,20 @@ const Agendamento = () => {
   const [symptoms, setSymptoms] = useState("");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
 
-  // Carregar consultas do localStorage quando o componente monta
+  // Carregar consultas e dados do usuário do localStorage quando o componente monta
   useEffect(() => {
     const savedAppointments = localStorage.getItem("medsched_appointments");
     if (savedAppointments) {
       setAppointments(JSON.parse(savedAppointments));
+    }
+
+    // Carregar nome do usuário logado para preencher o campo patientName
+    const storedUser = localStorage.getItem('currentUser');
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      if (userData && userData.name) {
+        setPatientName(userData.name); // Preenche o nome do paciente automaticamente
+      }
     }
   }, []);
 
