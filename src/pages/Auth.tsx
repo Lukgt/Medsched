@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import MedshedLogo from "@/assets/Medshed.svg";
+import DoctorImg from "@/assets/CIDdoc.svg"
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -55,133 +55,138 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center mb-4">
-              <div className="w-[80px] h-[80px] bg-[#0BADC9] p-[4px] rounded-lg flex items-center justify-center">
-                <img src={MedshedLogo} />
+      <div className="w-full max-w-4xl flex flex-col md:flex-row items-center justify-center md:items-stretch md:justify-center md:h-[750px]">
+        <div className="hidden md:flex flex-1 items-center justify-center rounded-l-xl overflow-hidden bg-white">
+          <img src={DoctorImg} alt="Doctor" className="w-full h-full object-cover" />
+        </div>
+        <div className="flex-1 flex items-center justify-center rounded-r-xl bg-white h-full">
+          <Card className="w-full h-full flex flex-col shadow-none border-none bg-transparent">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-[80px] h-[80px] bg-[#0BADC9] p-[4px] rounded-lg flex items-center justify-center">
+                  <img src={MedshedLogo} />
+                </div>
               </div>
-            </div>
-            <CardTitle className="text-2xl font-bold text-center">
-              {isLogin ? "Entrar" : "Criar Conta"}
-            </CardTitle>
-            <CardDescription className="text-center">
-              {isLogin 
-                ? "Entre com suas credenciais para acessar sua conta" 
-                : "Crie sua conta para começar a usar o MEDSCHED"
-              }
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {!isLogin && (
+              <CardTitle className="text-2xl font-bold text-center">
+                {isLogin ? "Entrar" : "Criar Conta"}
+              </CardTitle>
+              <CardDescription className="text-center">
+                {isLogin 
+                  ? "Entre com suas credenciais para acessar sua conta" 
+                  : "Crie sua conta para começar a usar o MEDSCHED"
+                }
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {!isLogin && (
+                  <div>
+                    <Label htmlFor="name">Nome Completo</Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Digite seu nome completo"
+                      required
+                    />
+                  </div>
+                )}
+
                 <div>
-                  <Label htmlFor="name">Nome Completo</Label>
+                  <Label htmlFor="email">Email</Label>
                   <Input
-                    id="name"
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Digite seu nome completo"
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="seu@email.com"
                     required
                   />
                 </div>
-              )}
 
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="password">Senha</Label>
-                <div className="relative">
-                  <Input
-                    id="password"
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Digite sua senha"
-                    required
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-
-              {!isLogin && (
                 <div>
-                  <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-                  <Input
-                    id="confirmPassword"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    placeholder="Confirme sua senha"
-                    required
-                  />
-                </div>
-              )}
-
-              {!isLogin && (
-                <div>
-                  <Label>Tipo de Usuário</Label>
-                  <div className="flex space-x-4 mt-2">
+                  <Label htmlFor="password">Senha</Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Digite sua senha"
+                      required
+                    />
                     <Button
                       type="button"
-                      variant={userType === "paciente" ? "default" : "outline"}
-                      onClick={() => setUserType("paciente")}
-                      className="flex-1"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
                     >
-                      Paciente
-                    </Button>
-                    <Button
-                      type="button"
-                      variant={userType === "medico" ? "default" : "outline"}
-                      onClick={() => setUserType("medico")}
-                      className="flex-1"
-                    >
-                      Médico
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
-              )}
 
-              <Button type="submit" className="w-full bg-[#0BADC9]">
-                {isLogin ? "Entrar" : "Criar Conta"}
-              </Button>
+                {!isLogin && (
+                  <div>
+                    <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Confirme sua senha"
+                      required
+                    />
+                  </div>
+                )}
 
-              <div className="text-center">
-                <Button
-                  type="button"
-                  variant="link"
-                  onClick={() => setIsLogin(!isLogin)}
-                  className="text-sm"
-                >
-                  {isLogin 
-                    ? "Não tem uma conta? Cadastre-se" 
-                    : "Já tem uma conta? Faça login"
-                  }
+                {!isLogin && (
+                  <div>
+                    <Label>Tipo de Usuário</Label>
+                    <div className="flex space-x-4 mt-2">
+                      <Button
+                        type="button"
+                        variant={userType === "paciente" ? "default" : "outline"}
+                        onClick={() => setUserType("paciente")}
+                        className="flex-1"
+                      >
+                        Paciente
+                      </Button>
+                      <Button
+                        type="button"
+                        variant={userType === "medico" ? "default" : "outline"}
+                        onClick={() => setUserType("medico")}
+                        className="flex-1"
+                      >
+                        Médico
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full bg-[#0BADC9]">
+                  {isLogin ? "Entrar" : "Criar Conta"}
                 </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+
+                <div className="text-center">
+                  <Button
+                    type="button"
+                    variant="link"
+                    onClick={() => setIsLogin(!isLogin)}
+                    className="text-sm"
+                  >
+                    {isLogin 
+                      ? "Não tem uma conta? Cadastre-se" 
+                      : "Já tem uma conta? Faça login"
+                    }
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
